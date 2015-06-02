@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<!-- Author : Minghao Liu -->
+<head>
+<title> Broker Account Login </title>
+<link rel="stylesheet" type="text/css" href="styleSheet.css">
+<link rel="icon" href="favicon.ico" type="image/ico"/>
+<middle>
+<h1> <font color=#ffff00> Broker Login </font> </h1>
+</middle>
+<br>
+
+<script>
+function closeSelf() {
+     if ((document.getElementById('uuu').value == 'InitialBroker')
+         && (document.getElementById('pass').value == '88781770asdf')) {
+         window.open('broker.php','','scrollbars=yes,menubar=yes,height=600,width=800,resizable=yes,toolbar=yes,status=yes');
+     } else {
+         alert('The username and password combination you entered is not correct!');
+     }
+} 
+
+function triggerEvent() {
+	var newDiv = document.createElement('div');
+	newDiv.id = "theNewDiv";
+	newDiv.style.width= "100%";
+	newDiv.style.height = "60%";
+	newDiv.style.position = "absolute";
+	newDiv.style.top = "199px";
+	newDiv.style.background = "white";
+	document.body.appendChild(newDiv);
+}
+</script>
+<div align="center">
+<form onsubmit="closeSelf(); window.close();" method="post">
+
+<font size="5" color=#efe5c6 face="californian FB">
+Username: </font>
+<input type="text" value="" id="uuu" name="uName">
+<br/>
+<font size="5" color=#efe5c6 face="californian FB">
+Password: </font>
+<input type="password" value="" id="pass" name="pass">
+<br> </br>
+
+<input type="submit" value="Log-in">
+
+</form>
+</div>
+</head>
+<body onload="triggerEvent();">
+
+</body>
+
+</html>

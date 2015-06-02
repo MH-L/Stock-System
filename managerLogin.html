@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<!-- Author : Minghao Liu -->
+<head>
+<title> Manager Account Login </title>
+<link rel="stylesheet" type="text/css" href="styleSheet.css" />
+<link rel="icon" href="favicon.ico" type="image/ico"/>
+<middle>
+<h1> <font color=#00ff00> Manager Login </font> </h1>
+</middle>
+<br/>
+<script>
+function closeSelf() {
+     if (document.getElementById('uuu').value == 'InitialManager'
+         && document.getElementById('pass').value == 'hilarious') {
+         // window.self.close();
+         window.open('manager.php','','scrollbars=yes,menubar=yes,height=600,width=800,resizable=yes,toolbar=no,status=no');
+     } else {
+         alert('The username and password combination you entered is not correct!');
+     }
+} 
+
+function triggerEvent() {
+	var newDiv = document.createElement('div');
+	newDiv.id = "theNewDiv";
+	newDiv.style.width= "100%";
+	newDiv.style.height = "90%";
+	newDiv.style.position = "absolute";
+	newDiv.style.top = "227px";
+	newDiv.style.background = "white";
+	document.body.appendChild(newDiv);
+}
+</script>
+
+<div align="center">
+<form onsubmit="closeSelf(); window.close();" method="post">
+
+<font size="5" color=#efe5c6" face="californian FB">
+Username: </font>
+<input type="text" value="" name="uName" id='uuu' />
+<br/>
+<br/>
+<font size="5" color=#efe5c6" face="californian FB">
+Password: </font>
+<input type="password" value="" name="pass" id='pass' />
+<br>
+<input type="submit" value="Log-in" style="margin:20px;width:60px;height:35px" />
+
+</form>
+</div>
+
+</head>
+<body onload="triggerEvent();">
+</body>
+<?php
+
+function checkIfvalid($uname, $password) {
+	$cmdString = "select password from login where loginid=" . $_POST['uName'] . ";";
+	$result = executePlainSQL($cmdString);
+	$pass = oci_fetch_array($pass);
+	if ($password == $pass) {
+		return true;
+	} else
+		return false;
+}
+
+$success = True; //keep track of errors so it redirects the page only if there are no errors
+$db_conn = OCILogon("ora_f2w8", "a51102135", "ug");
+
+function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
+	//echo "<br>running ".$cmdstr."<br>";
+	global $db_conn, $success;
+	$statement = OCIParse($db_conn, $cmdstr); //There is a set of comments at the end of the file that describe some of the OCI specific functions and how they work
+
+	if (!$statement) {
+		echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
+		$e = OCI_Error($db_conn); // For OCIParse errors pass the       
+		// connection handle
+		echo htmlentities($e['message']);
+		$success = False;
+	}
+
+	$r = OCIExecute($statement, OCI_DEFAULT);
+	if (!$r) {
+		echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
+		$e = oci_error($statement); // For OCIExecute errors pass the statementhandle
+		echo htmlentities($e['message']);
+		$success = False;
+	} else {
+
+	}
+	return $statement;
+
+}
+
+function executeBoundSQL($cmdstr, $list) {
+	global $db_conn, $success;
+	$statement = OCIParse($db_conn, $cmdstr);
+
+	if (!$statement) {
+		echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
+		$e = OCI_Error($db_conn);
+		echo htmlentities($e['message']);
+		$success = False;
+	}
+
+	foreach ($list as $tuple) {
+		foreach ($tuple as $bind => $val) {
+			OCIBindByName($statement, $bind, $val);
+			unset ($val);
+
+		}
+		$r = OCIExecute($statement, OCI_DEFAULT);
+		if (!$r) {
+			echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
+			$e = OCI_Error($statement); // For OCIExecute errors pass the statementhandle
+			echo htmlentities($e['message']);
+			echo "<br>";
+			$success = False;
+		}
+	}
+
+}
+
+if ($db_connection) {
+		echo "Connection succeeded!";
+		if (array_key_exists('uName', $_POST)) {
+			$bool = checkIfvalid($_POST['uName'], $_POST['pass']);
+			if ($bool) {
+				echo "window.close()";
+			} else {
+				echo "Invalid user name password combination.";
+			}
+		}
+} else {
+	echo "Connection error!";
+}
+
+?>
+</html>

@@ -1,0 +1,299 @@
+drop table transaction cascade constraints;
+drop table client cascade constraints;
+drop table broker cascade constraints;
+drop table investment cascade constraints;
+drop table account cascade constraints;
+drop table stock cascade constraints;
+drop table portfolio_detail cascade constraints;
+drop table login cascade constraints;
+drop table client_has_account cascade constraints;
+
+create table login (
+	loginid int,
+	password char(20),
+	primary key (loginid)
+	);
+
+create table broker (
+	bid int,
+	bname char(20),
+	transnum int,
+	primary key (bid)
+	);
+	
+create table client (
+	cid int,
+	cname char(20),
+	bid int not null,
+	primary key (cid),
+	foreign key (bid) references broker (bid)
+	on delete cascade
+	);
+	
+create table investment (
+	investmentid int,
+	isstock number(1,0) not null,
+	isbond number(1,0) not null,
+	isoption number(1,0) not null,
+	primary key (investmentid)
+	);
+	
+create table stock (
+	stockid int,
+	price real,
+	rateofchange real,
+	primary key (stockid)
+	);
+
+create table transaction (
+	transaction_num int,
+	investmentid int,
+	shareamount int,
+	traded_price number(8,2),
+	isbuying number(1,0) not null,
+	isselling number(1,0) not null,
+	isshortselling number(1,0) not null,
+	isbuyingtocover number(1,0) not null,
+	bid int,
+	primary key (transaction_num),
+	foreign key (investmentid) references stock (stockid)
+	on delete cascade,
+	foreign key (bid) references broker (bid)
+	on delete cascade
+	);
+
+create table account (
+	accountno int,
+	cash real not null,
+	primary key (accountno)
+	);
+
+create table client_has_account (
+	cid int,
+	accountno int,
+	foreign key (accountno) references account (accountno),
+	foreign key (cid) references client (cid)
+	on delete cascade,
+	primary key (cid)
+	);
+
+create table portfolio_detail (
+	accountno int,
+	ticket int,
+	traded_price number(8,2),
+	shareamount int,
+	foreign key (accountno) references account(accountno)
+	on delete cascade,
+	primary key (ticket, accountno),
+	foreign key (ticket) references stock (stockid)
+	on delete cascade
+	);
+	
+alter table account add constraint accnonnegative check (accountno >= 0 AND accountno < 1000000);
+alter table transaction add constraint tradepositive check (traded_price > 0);
+alter table stock add constraint pricepositive check (price > 0);
+alter table transaction add constraint shareamountpositive check (shareamount > 0);
+alter table account add constraint cashpositive check (cash >= 0);
+alter table broker add constraint bidpositive check (bid >= 0 AND bid < 1000000);
+alter table stock add constraint sidpositive check (stockid >= 0 AND stockid < 1000000);
+alter table client add constraint cidpositive check (cid >= 0 AND cid < 1000000);
+alter table investment add constraint isbondbool check (isbond = 0 OR isbond = 1);
+alter table investment add constraint isoptionbool check (isoption = 0 OR isoption = 1);
+alter table investment add constraint isstockbool check (isstock = 0 OR isstock = 1);
+alter table portfolio_detail add constraint ticketpositive check (ticket >= 0 AND ticket < 1000000);
+alter table broker add constraint transispositive check (transnum >= 0);
+
+
+insert into login values(000001, 000001);
+insert into login values(000002, 000002);
+insert into login values(000003, 000003);
+insert into login values(000004, 000004);
+insert into login values(000005, 000005);
+insert into login values(000006, 000006);
+insert into login values(000007, 000007);
+insert into login values(000008, 000008);
+insert into login values(100001, 100001);
+insert into login values(100002, 100002);
+insert into login values(100003, 100003);
+insert into login values(100004, 100004);
+insert into login values(100005, 100005);
+insert into login values(100006, 100006);
+insert into login values(100007, 100007);
+insert into login values(100008, 100008);
+
+insert into broker values(000001, 'Sally White', 0);
+insert into broker values(000002, 'Jessica Sung', 0);
+insert into broker values(000003, 'Ann Chan', 0);
+insert into broker values(000004, 'Kevin Silver', 0);
+insert into broker values(000005, 'David Williams', 0);
+insert into broker values(000006, 'John Lai', 0);
+insert into broker values(000007, 'Amanda Ho', 0);
+insert into broker values(000008, 'Emily Blue', 0);
+insert into broker values(000009, 'James Cooper', 0);
+insert into broker values(000010, 'Karen Smith', 0);
+
+insert into client values(100001, 'John Smith', 000001);
+insert into client values(100002, 'William Ku', 000002);
+insert into client values(100003, 'Chris Brown', 000003);
+insert into client values(100004, 'Peter Chan', 000004);
+insert into client values(100005, 'Alex Lam', 000005);
+insert into client values(100006, 'Tony Gee', 000006);
+insert into client values(100007, 'Louis Lu', 000007);
+insert into client values(100008, 'Andy Liu', 000008);
+insert into client values(100009, 'Alan Mattieu', 000009);
+insert into client values(100010, 'Pegan Downey', 000010);
+insert into client values(100011, 'Brandon Benedict', 000001);
+insert into client values(100012, 'Dale Matie', 000002);
+insert into client values(100013, 'Kelly Lin', 000003);
+insert into client values(100014, 'Andy Lau', 000004);
+insert into client values(100015, 'Jay Chu', 000004);
+insert into client values(100016, 'Jason Chu', 000007);
+insert into client values(100017, 'Kale Allen', 000003);
+insert into client values(100018, 'Anderson Priston', 000005);
+insert into client values(100019, 'Jane Candra', 000006);
+insert into client values(100020, 'Ken Wong', 000008);
+insert into client values(100021, 'Leon Kim', 000008);
+insert into client values(100022, 'Ben Zhu', 000004);
+insert into client values(100023, 'Sofie Marce', 000002);
+insert into client values(100024, 'Sarah Chen', 000001);
+insert into client values(100025, 'Eva Kennedy', 000009);
+insert into client values(100026, 'Justin Audret', 000007);
+insert into client values(100027, 'Lauren Juette', 000005);
+insert into client values(100028, 'Hugh Daei', 000004);
+insert into client values(100029, 'Lauren Paule', 000002);
+insert into client values(100030, 'Orien Brien', 000010);
+insert into client values(100032, 'Unita Santas', 000007);
+insert into client values(100031, 'Keai Jip', 000004);
+
+insert into investment values(123456, 1, 0, 0);
+insert into investment values(600722, 0, 1, 0);
+insert into investment values(678291, 1, 0, 0);
+insert into investment values(028321, 0, 1, 0);
+insert into investment values(213332, 0, 0, 1);
+insert into investment values(782128, 1, 0, 0);
+insert into investment values(798056, 0, 1, 0);
+insert into investment values(145482, 0, 0, 1);
+
+
+insert into stock values(123456, 8.76, -9.23);
+insert into stock values(600722, 9.87, -7.88);
+insert into stock values(682113, 12.62, 8.44);
+insert into stock values(882628, 10.44, 0.78);
+insert into stock values(028812, 22.13, -1.20);
+insert into stock values(000235, 2.67, 3.42);
+insert into stock values(007642, 2.56, 0.99);
+insert into stock values(829723, 87.22, -12.11);
+insert into stock values(678291, 24.60, 9.00);
+insert into stock values(782128, 77.30, 8.76);
+insert into stock values(213332, 14.40, -7.62);
+insert into stock values(028321, 34.21, -1.42);
+
+insert into transaction values(000001, 123456, 50, 88.43, 1, 0, 0, 0, 000001);
+insert into transaction values(000002, 600722, 100, 52.19, 0, 1, 0, 0, 000002);
+insert into transaction values(000003, 213332, 200, 125.69, 1, 0, 0, 0, 000003);
+insert into transaction values(000004, 028321, 100, 544.97, 1, 0, 0, 0, 000004);
+insert into transaction values(000005, 000235, 50, 39.56, 0, 0, 0, 1, 000005);
+insert into transaction values(000006, 028812, 100, 81.09, 0, 1, 0, 0, 000006);
+insert into transaction values(000007, 007642, 300, 49.21, 0, 0, 1, 0, 000007);
+insert into transaction values(000008, 782128, 150, 9.99, 1, 0, 0, 0, 000008);
+insert into transaction values(000009, 028321, 200, 9.99, 1, 0, 0, 0, 000004);
+
+insert into account values(000001, 1009872.55);
+insert into account values(000002, 398476.23);
+insert into account values(000003, 99999.99);
+insert into account values(000004, 58373.57);
+insert into account values(000005, 120000.45);
+insert into account values(000006, 789478.09);
+insert into account values(000007, 909090.66);
+insert into account values(000008, 467836.98);
+insert into account values(000009, 555236.98);
+insert into account values(000010, 859836.98);
+insert into account values(000011, 829382.09);
+insert into account values(000012, 83829.80);
+insert into account values(000013, 137827.60);
+insert into account values(000014, 749813.07);
+insert into account values(000015, 63278.13);
+insert into account values(000016, 237286.67);
+insert into account values(000017, 1237927.40);
+insert into account values(000018, 732138.96);
+insert into account values(000019, 458554.45);
+insert into account values(000020, 465445.89);
+insert into account values(000021, 602832.78);
+insert into account values(000022, 561212.02);
+insert into account values(000023, 646545.18);
+insert into account values(000024, 1264728.00);
+insert into account values(000025, 2891282.70);
+insert into account values(000026, 327812.37);
+insert into account values(000027, 746783.20);
+insert into account values(000028, 537283.10);
+insert into account values(000029, 3263237.74);
+insert into account values(000030, 342787.12);
+insert into account values(000031, 128732.08);
+insert into account values(000032, 33473.10);
+
+insert into client_has_account values(100001, 000001);
+insert into client_has_account values(100002, 000002);
+insert into client_has_account values(100003, 000003);
+insert into client_has_account values(100004, 000004);
+insert into client_has_account values(100005, 000005);
+insert into client_has_account values(100006, 000006);
+insert into client_has_account values(100007, 000007);
+insert into client_has_account values(100008, 000008);
+insert into client_has_account values(100009, 000009);
+insert into client_has_account values(100010, 000010);
+insert into client_has_account values(100011, 000011);
+insert into client_has_account values(100012, 000012);
+insert into client_has_account values(100013, 000013);
+insert into client_has_account values(100014, 000014);
+insert into client_has_account values(100015, 000015);
+insert into client_has_account values(100016, 000016);
+insert into client_has_account values(100017, 000017);
+insert into client_has_account values(100018, 000018);
+insert into client_has_account values(100019, 000019);
+insert into client_has_account values(100020, 000020);
+insert into client_has_account values(100021, 000021);
+insert into client_has_account values(100022, 000022);
+insert into client_has_account values(100023, 000023);
+insert into client_has_account values(100024, 000024);
+insert into client_has_account values(100025, 000025);
+insert into client_has_account values(100026, 000026);
+insert into client_has_account values(100027, 000027);
+insert into client_has_account values(100028, 000028);
+insert into client_has_account values(100029, 000029);
+insert into client_has_account values(100030, 000030);
+insert into client_has_account values(100031, 000031);
+insert into client_has_account values(100032, 000032);
+
+
+insert into portfolio_detail values(000001, 123456, 88.43, 50);
+insert into portfolio_detail values(000002, 600722, 52.19, 100);
+insert into portfolio_detail values(000003, 882628, 125.69, 200);
+insert into portfolio_detail values(000004, 678291, 544.97, 100);
+insert into portfolio_detail values(000005, 028321, 39.56, 50);
+insert into portfolio_detail values(000006, 000235, 81.09, 100);
+insert into portfolio_detail values(000007, 829723, 49.21, 300);
+insert into portfolio_detail values(000008, 682113, 9.99, 150);
+insert into portfolio_detail values(000009, 028321, 39.56, 200);
+insert into portfolio_detail values(000010, 882628, 12.87, 3829);
+insert into portfolio_detail values(000011, 600722, 12.90, 18209);
+insert into portfolio_detail values(000012, 123456, 88.43, 50);
+insert into portfolio_detail values(000013, 600722, 52.19, 100);
+insert into portfolio_detail values(000014, 882628, 125.69, 200);
+insert into portfolio_detail values(000015, 678291, 544.97, 100);
+insert into portfolio_detail values(000016, 028321, 39.56, 50);
+insert into portfolio_detail values(000017, 213332, 81.09, 1230);
+insert into portfolio_detail values(000018, 829723, 49.21, 7000);
+insert into portfolio_detail values(000019, 678291, 9.99, 2892);
+insert into portfolio_detail values(000020, 028321, 39.56, 200);
+insert into portfolio_detail values(000021, 882628, 12.87, 3829);
+insert into portfolio_detail values(000022, 123456, 88.43, 50);
+insert into portfolio_detail values(000023, 600722, 52.19, 1236);
+insert into portfolio_detail values(000024, 213332, 125.69, 200);
+insert into portfolio_detail values(000025, 678291, 544.97, 1378);
+insert into portfolio_detail values(000026, 028321, 39.56, 50);
+insert into portfolio_detail values(000027, 000235, 81.09, 100);
+insert into portfolio_detail values(000028, 829723, 49.21, 300);
+insert into portfolio_detail values(000029, 682113, 9.99, 150);
+insert into portfolio_detail values(000030, 028321, 39.56, 200);
+insert into portfolio_detail values(000031, 882628, 12.87, 3829);
+insert into portfolio_detail values(000032, 123456, 10.22, 10023);

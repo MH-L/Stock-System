@@ -1,0 +1,70 @@
+h1 {
+     color: red;
+     margin-top: 20px;
+     text-align: center;
+	 font-family: "calibri light", "Calibri";
+}
+
+h3 {
+     color: navy;
+     margin-top: 12px;
+     text-align: center;
+	 font-family: "calibri light", "Calibri";
+}
+
+h2 {
+     color: cyan;
+     text-align: center;
+	 font-family: "calibri light", "Calibri";
+}
+
+h4 {
+     color: orange;
+     text-align: center;
+	 font-family: "calibri light", "Calibri";
+}
+
+p {
+     font-family: "Times New Roman";
+     font-size: 20px;
+}
+
+body {
+     
+}
+
+a:link {
+     text-decoration: "underline";
+     color: #000000;
+     font-family: Calibri Light, Calibri, Arial;
+     font-size: 150%;
+}
+
+
+a:hover {
+     text-decoration: "underline";
+     color: #00ff00;
+     font-family: Calibri Light, Calibri, Arial;
+     font-size: 150%;
+}
+
+a:visited {
+     text-decoration: "underline";
+     color: #0000ff;
+     font-family: Calibri Light, Calibri, Arial;
+     font-size: 150%;
+}
+
+input[type=submit] {
+     font-family: Calibri Light, Calibri, Arial;
+     font-size: 100%;
+}
+
+input[type=text] {
+	 font-family: Calibri Light, Calibri, Californian DB;
+	 font-size:100%;
+}
+
+
+
+

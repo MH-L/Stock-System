@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<head>
+<title> Stock Operating System </title>
+<link rel="stylesheet" type="text/css" href="styleSheet.css" />
+<link rel="icon" href="favicon.ico" type="image/ico"/>
+</head>
+<body bgcolor=#e4f3e5>
+<script language="javascript">
+function loadPage() {
+     alert("Welcome to stock operating system!");
+}
+
+function checkCombination() {
+	var unamestr = document.getElementById("666").value;
+	var pswd = document.getElementById("777").value;
+	if (unamestr == "Minghao_Liu" && pswd == "a51102135") {
+		window.open("UserUI.php");
+	} else 
+		alert("Incorrect username/password combination!");
+}
+</script>
+
+<h1> <center> Stock Operating System </center> </h1>
+<h3> <center> <i> Where amazing happens! </i> </center> <h3>
+<hr> <!-- this line adds a horizontal line to the html webpage.-->
+
+<center> <marquee direction="left" behavior="alternate" scrollamount="3" style="width:100%"> 
+<img src="stock.jpg" style="width:350px;height:200px"> <img src="vodka.jpg" style="width:350px;height:200px" /> 
+<img src="stockPrice.jpg" style="width:350px;height:200px"> <img src="money.jpg" style="width:350px;height:200px" /> 
+<img src="shares.jpg" style="width:350px;height:200px"> <img src="nasdaq.jpg" style="width:350px;height:200px">
+<img src="stock_market.jpg" style="width:350px;height:200px"> </marquee> </center>
+
+<center> <p> <form onsubmit="checkCombination();" method="post"> User-Name: 
+<input type="text" name="Uname" id="666" style="margin-bottom:5px" value="" />
+<br/> Password: <input type="password" name="Password" id="777" style="margin-top:5px;height:1.7em" size="30" value="" /> <br/> 
+<input type="submit" formmethod="post" style="width:100px;height:30px;margin-right:5px" onclick="clickFun()"
+value="log-in" style="font-family:calibri light,calibri">
+
+<script src="formAction.js"> </script>
+
+<a href="signup.php">
+<button type="button" formmethod="post" style="width:100px;height:30px;margin-left:5px">
+<font size="4" color="green"> sign-up </font> </button> </a> </center> </p>
+<br/><br/><br/>
+
+<div align="center">
+<p> <font face="Calibri" size="6"> Quick Links: </font> </p>
+<a href="brokerLogin.html" style="color:#ff0000"
+onmouseover="this.style.color='#00ff00';" onmouseout="this.style.color='#ff0000';"
+onclick="window.open(this.href,'','scrollbars=no,menubar=no,height=350,width=320,resizable=no,toolbar=no,status=no');
+this.style.color='#00ffff'; return false;">
+Broker Log-in </a> &nbsp; &nbsp;
+<a href="managerLogin.html" style="color:#0000ff"
+onmouseover="this.style.color='#00ff00';" onmouseout="this.style.color='#0000ff';"
+onclick="window.open(this.href,'','scrollbars=no,menubar=no,height=350,width=320,resizable=no,toolbar=no,status=no');
+this.style.color='#00ffff'; return false;">
+Manager Log-in </a> &nbsp; &nbsp;
+<a href="clientLogin.html" style="color:#000000"
+onmouseover="this.style.color='#00ff00';" onmouseout="this.style.color='#000000';"
+onclick="window.open(this.href,'','scrollbars=no,menubar=no,height=350,width=320,resizable=no,toolbar=no,status=no');
+this.style.color='#00ffff'; return false;">
+Client Log-in </a> </div>
+<a href="about.html"> <h4> About Us </h4> </a>
+</body>
+</html>
